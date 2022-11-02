@@ -1,28 +1,32 @@
 import { StatusBar } from "expo-status-bar";
-import { StyleSheet, Text, View } from "react-native";
+import { SafeAreaView, StyleSheet, Text, View } from "react-native";
+import colors from "./app/misc/colors";
+import Welcome from "./app/screens/Welcome";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import { useEffect } from "react";
 
 export default function App() {
+  useEffect(() => {
+    async function loadData() {
+      const result = await AsyncStorage.getItem("user");
+      console.log(result);
+    }
+    loadData();
+  }, []);
+
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Hello React Native</Text>
+    <View style={styles.app}>
+      <Welcome></Welcome>
       <StatusBar style="auto" />
     </View>
   );
 }
 
 const styles = StyleSheet.create({
-  container: {
+  app: {
+    backgroundColor: colors.BodyBg,
     flex: 1,
-    backgroundColor: "#1F2937",
-    alignItems: "center",
-    color: "white",
-    justifyContent: "center",
-  },
-  text: {
-    color: "#ddd",
-    fontSize: 46,
-    fontWeight: "bold",
-    backgroundColor: "transparent",
-    borderRadius: 10,
+    color: colors.Peragraph,
+    // paddingTop: 50,
   },
 });
