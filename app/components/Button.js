@@ -3,12 +3,22 @@ import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../misc/colors";
 
-export default function Button({ name, style, color, size, handleSubmit }) {
+export default function Button({
+  name,
+  styleContainer,
+  color,
+  size,
+  handleSubmit,
+  style,
+}) {
   return (
-    <View style={styles.container} onPress={handleSubmit}>
+    <View
+      style={[styles.container, { ...styleContainer }]}
+      onPress={handleSubmit}
+    >
       <AntDesign
         name={name}
-        size={size || 96}
+        size={size || 26}
         color={color || colors.White}
         style={[styles.icon, { ...style }]}
       />
@@ -31,7 +41,6 @@ const styles = StyleSheet.create({
     elevation: 10,
   },
   icon: {
-    fontSize: 20,
-    fontWeight: "bold",
+    fontWeight: "900",
   },
 });

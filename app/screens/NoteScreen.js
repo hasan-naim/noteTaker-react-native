@@ -1,17 +1,16 @@
 import { Text, StyleSheet, View, SafeAreaView, TextInput } from "react-native";
 import Button from "../components/Button";
-import React, { Component } from "react";
-import { StatusBar } from "expo-status-bar";
+import React, { Component, useEffect } from "react";
 import colors from "../misc/colors";
 import SearchBar from "../components/SearchBar";
+import NoteInputModal from "../components/NoteInputModal";
 
 export default function NoteScreen({ user }) {
+  console.log(user);
+  useEffect(() => {}, []);
+
   return (
     <>
-      <StatusBar
-        barStyle={"dark-content"}
-        backgroundColor={colors.BodyBg}
-      ></StatusBar>
       <SafeAreaView style={styles.container}>
         <SearchBar />
         <View style={[StyleSheet.absoluteFillObject, styles.emptyHeader]}>
@@ -19,6 +18,7 @@ export default function NoteScreen({ user }) {
           <Button name={"plus"} />
         </View>
       </SafeAreaView>
+      <NoteInputModal visible={true}></NoteInputModal>
     </>
   );
 }

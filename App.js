@@ -8,15 +8,16 @@ import NoteScreen from "./app/screens/NoteScreen";
 
 export default function App() {
   const [user, setUser] = useState({});
-
-  useEffect(() => {
-    async function loadData() {
-      const result = await AsyncStorage.getItem("user");
-      setUser(result);
+  const loadData = async () => {
+    const result = await AsyncStorage.getItem("user");
+    if (result) {
+      const gotUser = await JSON.parse(result);
+      setUser(gotUser);
     }
+  };
+  useEffect(() => {
     loadData();
   }, []);
-
   return <NoteScreen user={user}></NoteScreen>;
 }
 
