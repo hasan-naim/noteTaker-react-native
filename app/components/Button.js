@@ -21,7 +21,7 @@ const styles = StyleSheet.create({
     position: "absolute",
     bottom: 20,
     right: 40,
-    backgroundColor: colors.LightDark,
+    backgroundColor: colors.primary,
     width: 54,
     height: 54,
     flex: 1,

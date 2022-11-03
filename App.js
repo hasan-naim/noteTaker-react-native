@@ -3,23 +3,21 @@ import { SafeAreaView, StyleSheet, Text, View } from "react-native";
 import colors from "./app/misc/colors";
 import Welcome from "./app/screens/Welcome";
 import AsyncStorage from "@react-native-async-storage/async-storage";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
+import NoteScreen from "./app/screens/NoteScreen";
 
 export default function App() {
+  const [user, setUser] = useState({});
+
   useEffect(() => {
     async function loadData() {
       const result = await AsyncStorage.getItem("user");
-      console.log(result);
+      setUser(result);
     }
     loadData();
   }, []);
 
-  return (
-    <View style={styles.app}>
-      <Welcome></Welcome>
-      <StatusBar style="auto" />
-    </View>
-  );
+  return <NoteScreen user={user}></NoteScreen>;
 }
 
 const styles = StyleSheet.create({

@@ -22,7 +22,10 @@ export default function Welcome() {
   };
   return (
     <>
-      {/* <StatusBar hidden></StatusBar> */}
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={colors.BodyBg}
+      ></StatusBar>
       <View style={styles.container}>
         <View style={styles.content}>
           <Text style={styles.text}>Welcome</Text>
@@ -47,13 +50,17 @@ export default function Welcome() {
 const width = Dimensions.get("window").width;
 
 const styles = StyleSheet.create({
+  statusBar: {
+    color: "white",
+    backgroundColor: "white",
+  },
   container: {
     // paddingHorizontal: 20,
     // flex: 1,
     flex: 1,
     paddingHorizontal: 20,
     alignItems: "flex-start",
-    // backgroundColor: "white",
+    backgroundColor: colors.BodyBg,
     textAlign: "left",
   },
 
