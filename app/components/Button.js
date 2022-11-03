@@ -1,4 +1,4 @@
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, TouchableWithoutFeedback } from "react-native";
 import React from "react";
 import { AntDesign } from "@expo/vector-icons";
 import colors from "../misc/colors";
@@ -8,21 +8,22 @@ export default function Button({
   styleContainer,
   color,
   size,
-  handleSubmit,
   style,
+  click,
 }) {
   return (
-    <View
-      style={[styles.container, { ...styleContainer }]}
-      onPress={handleSubmit}
-    >
-      <AntDesign
-        name={name}
-        size={size || 26}
-        color={color || colors.White}
-        style={[styles.icon, { ...style }]}
-      />
-    </View>
+    <>
+      <TouchableWithoutFeedback onPress={click}>
+        <View style={[styles.container, { ...styleContainer }]}>
+          <AntDesign
+            name={name}
+            size={size || 26}
+            color={color || colors.White}
+            style={[styles.icon, { ...style }]}
+          />
+        </View>
+      </TouchableWithoutFeedback>
+    </>
   );
 }
 

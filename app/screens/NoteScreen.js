@@ -1,12 +1,13 @@
 import { Text, StyleSheet, View, SafeAreaView, TextInput } from "react-native";
 import Button from "../components/Button";
-import React, { Component, useEffect } from "react";
+import React, { Component, useEffect, useState } from "react";
 import colors from "../misc/colors";
 import SearchBar from "../components/SearchBar";
 import NoteInputModal from "../components/NoteInputModal";
 
 export default function NoteScreen({ user }) {
-  console.log(user);
+  const [modalVisible, setModalVisible] = useState(false);
+
   useEffect(() => {}, []);
 
   return (
@@ -15,10 +16,13 @@ export default function NoteScreen({ user }) {
         <SearchBar />
         <View style={[StyleSheet.absoluteFillObject, styles.emptyHeader]}>
           <Text style={styles.emptyHeaderText}>Add Note</Text>
-          <Button name={"plus"} />
+          <Button name={"plus"} click={() => setModalVisible(true)} />
         </View>
       </SafeAreaView>
-      <NoteInputModal visible={true}></NoteInputModal>
+      <NoteInputModal
+        visible={modalVisible}
+        onClose={() => setModalVisible(false)}
+      ></NoteInputModal>
     </>
   );
 }
