@@ -1,32 +1,83 @@
-import { Text, StyleSheet, View, SafeAreaView, TextInput } from "react-native";
+import {
+  Text,
+  StyleSheet,
+  View,
+  SafeAreaView,
+  TextInput,
+  FlatList,
+  Dimensions,
+} from "react-native";
 import Button from "../components/Button";
 import React, { Component, useEffect, useState } from "react";
 import colors from "../misc/colors";
 import SearchBar from "../components/SearchBar";
 import NoteInputModal from "../components/NoteInputModal";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import Note from "../components/Note";
 
-export default function NoteScreen({ user }) {
+export default function NoteScreen({ user, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
+  const [notes, setNotes] = useState([]);
+  const findNotes = async () => {
+    const res = await AsyncStorage.getItem("notes");
+    if (res === null) return;
+    const result = await JSON.parse(res);
+    setNotes(result);
+  };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    // AsyncStorage.clear();
+    findNotes();
+  }, []);
+
+  const onsubmit = async (title, desc) => {
+    const time = new Date().getTime();
+    const note = { id: Date.now(), title, desc, time };
+    const updateNotes = [...notes, note];
+    setNotes(updateNotes);
+    await AsyncStorage.setItem("notes", JSON.stringify(updateNotes));
+  };
+
+  const openNote = (item) => {
+    navigation.navigate("NoteDetails", { item });
+  };
 
   return (
     <>
       <SafeAreaView style={styles.container}>
-        <SearchBar />
-        <View style={[StyleSheet.absoluteFillObject, styles.emptyHeader]}>
-          <Text style={styles.emptyHeaderText}>Add Note</Text>
-          <Button name={"plus"} click={() => setModalVisible(true)} />
+        {notes.length > 0 ? <SearchBar /> : <></>}
+        <View style={styles.notesContainer}>
+          <FlatList
+            data={notes}
+            keyExtractor={(item) => item.id.toString()}
+            renderItem={({ item }) => (
+              <Note onPress={() => openNote(item)} item={item} />
+            )}
+          />
         </View>
+        {/* If there is no note it will show this text */}
+        {notes.length > 0 ? (
+          <></>
+        ) : (
+          <View style={[StyleSheet.absoluteFillObject, styles.emptyHeader]}>
+            <Text style={styles.emptyHeaderText}>Add Note</Text>
+          </View>
+        )}
+
+        {/* Adding button */}
+        <Button name={"plus"} click={() => setModalVisible(true)} />
       </SafeAreaView>
+
+      {/* Modal */}
       <NoteInputModal
         visible={modalVisible}
         onClose={() => setModalVisible(false)}
-      ></NoteInputModal>
+        onsubmit={onsubmit}
+      />
     </>
   );
 }
-
+const width = Dimensions.get("window").width;
 const styles = StyleSheet.create({
   container: {
     // paddingHorizontal: 20,
@@ -40,8 +91,12 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     backgroundColor: colors.BodyBg,
     textAlign: "left",
+    paddingBottom: 120,
   },
-
+  notesContainer: {
+    paddingTop: 20,
+    width: width - 45,
+  },
   header: {
     color: colors.White,
     fontSize: 66,

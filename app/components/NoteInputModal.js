@@ -12,7 +12,7 @@ import React, { useEffect, useState } from "react";
 import colors from "../misc/colors";
 import Button from "./Button";
 
-const NoteInputModal = ({ visible, onClose }) => {
+const NoteInputModal = ({ visible, onClose, onsubmit }) => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
 
@@ -30,6 +30,16 @@ const NoteInputModal = ({ visible, onClose }) => {
   };
   const handleSubmit = () => {
     if (!title.trim() && !desc.trim()) return onClose();
+    onsubmit(title, desc);
+    setTitle("");
+    setDesc("");
+    onClose();
+  };
+
+  const handleClose = () => {
+    setTitle("");
+    setDesc("");
+    onClose();
   };
 
   return (
@@ -56,8 +66,14 @@ const NoteInputModal = ({ visible, onClose }) => {
             <View style={[StyleSheet.absoluteFillObject, styles.emptySpace]} />
           </TouchableWithoutFeedback>
           <View style={[StyleSheet.absoluteFillObject]}>
-            <Button name={"check"} click={handleSubmit} />
-            <Button name={"close"} styleContainer={styles.closeBtn} />
+            {title.trim() || desc.trim() ? (
+              <Button name={"check"} click={handleSubmit} />
+            ) : null}
+            <Button
+              name={"close"}
+              click={handleClose}
+              styleContainer={styles.closeBtn}
+            />
           </View>
         </View>
       </Modal>
