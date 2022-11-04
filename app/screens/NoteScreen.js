@@ -14,17 +14,19 @@ import SearchBar from "../components/SearchBar";
 import NoteInputModal from "../components/NoteInputModal";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import Note from "../components/Note";
+import { useNotes } from "../context/NoteProvider";
 
 export default function NoteScreen({ user, navigation }) {
   const [modalVisible, setModalVisible] = useState(false);
-  const [notes, setNotes] = useState([]);
+
+  const { notes, setNotes } = useNotes();
+
   const findNotes = async () => {
     const res = await AsyncStorage.getItem("notes");
     if (res === null) return;
     const result = await JSON.parse(res);
     setNotes(result);
   };
-
   useEffect(() => {
     // AsyncStorage.clear();
     findNotes();

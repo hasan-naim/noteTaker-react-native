@@ -12,9 +12,16 @@ import React, { useEffect, useState } from "react";
 import colors from "../misc/colors";
 import Button from "./Button";
 
-const NoteInputModal = ({ visible, onClose, onsubmit }) => {
+const NoteInputModal = ({ visible, onClose, onsubmit, note, isEdit }) => {
   const [title, setTitle] = useState("");
   const [desc, setDesc] = useState("");
+
+  useEffect(() => {
+    if (isEdit) {
+      setTitle(note.title);
+      setDesc(note.desc);
+    }
+  }, [isEdit]);
 
   const handleModalClose = () => {
     Keyboard.dismiss();
@@ -30,21 +37,28 @@ const NoteInputModal = ({ visible, onClose, onsubmit }) => {
   };
   const handleSubmit = () => {
     if (!title.trim() && !desc.trim()) return onClose();
-    onsubmit(title, desc);
-    setTitle("");
-    setDesc("");
-    onClose();
+    if (isEdit) {
+      onsubmit(title, desc, Date.now());
+    } else {
+      onsubmit(title, desc);
+      setTitle("");
+      setDesc("");
+      onClose();
+    }
   };
 
   const handleClose = () => {
-    setTitle("");
-    setDesc("");
+    if (isEdit) {
+    } else {
+      setTitle("");
+      setDesc("");
+    }
     onClose();
   };
 
   return (
     <>
-      <Modal visible={visible}>
+      <Modal visible={visible} animationType="slide">
         <View style={styles.container}>
           <TextInput
             style={[styles.input, styles.title]}
